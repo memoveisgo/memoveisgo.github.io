@@ -109,10 +109,10 @@
   .hero {
     min-height: 100vh; display: flex; align-items: center;
     position: relative; overflow: hidden;
-    background: linear-gradient(135deg, #0A0A0A 0%, #1A1510 50%, #0A0A0A 100%);
+    background: linear-gradient(135deg, #FAF7F2 0%, #F5EDDE 50%, #FDF9F4 100%);
   }
   .hero-bg {
-    position: absolute; inset: 0; opacity: 0.08;
+    position: absolute; inset: 0; opacity: 0.04;
     background-image: repeating-linear-gradient(
       45deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 60px
     );
@@ -120,27 +120,33 @@
   .hero-glow {
     position: absolute; top: -200px; right: -200px;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(184,134,11,0.12) 0%, transparent 70%);
+  }
+  .hero-shape {
+    position: absolute; bottom: 0; right: -100px; width: 55%; height: 100%;
+    background: linear-gradient(135deg, rgba(184,134,11,0.06) 0%, rgba(184,134,11,0.03) 100%);
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
   }
   .hero-content { position: relative; z-index: 1; padding-top: 100px; max-width: 700px; }
   .hero-badge {
     display: inline-block; padding: 6px 16px;
     border: 1px solid var(--gold); color: var(--gold);
     font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;
+    background: rgba(184,134,11,0.06);
   }
   .hero-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(38px, 6vw, 72px);
     font-weight: 900; line-height: 1.1;
-    color: var(--white-pure); margin-bottom: 24px;
+    color: #1A1A1A; margin-bottom: 24px;
   }
   .hero-title em { font-style: italic; color: var(--gold); }
-  .hero-sub { font-size: 18px; color: var(--gray-light); line-height: 1.7; margin-bottom: 40px; max-width: 520px; }
+  .hero-sub { font-size: 18px; color: #4B5563; line-height: 1.7; margin-bottom: 40px; max-width: 520px; }
   .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 60px; }
   .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
   .stat { border-left: 2px solid var(--gold); padding-left: 16px; }
   .stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); }
-  .stat-label { font-size: 12px; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; }
+  .stat-label { font-size: 12px; color: #6B7280; letter-spacing: 1px; text-transform: uppercase; }
 
   /* FEATURES */
   .features { background: var(--dark2); }
@@ -217,6 +223,31 @@
   .no-results h3 { color: var(--white); font-family: 'Playfair Display', serif; margin-bottom: 8px; }
   .no-results p { color: var(--gray); font-size: 14px; }
   .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  /* Category group separator inside products-grid */
+  .cat-group-header {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 16px;
+    padding: 8px 0 4px;
+    margin-top: 12px;
+  }
+  .cat-group-header:first-child { margin-top: 0; }
+  .cat-group-title {
+    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--white-pure);
+    white-space: nowrap;
+  }
+  .cat-group-line { flex: 1; height: 1px; background: rgba(184,134,11,0.2); }
+  .cat-group-count { font-size: 12px; color: var(--gold); letter-spacing: 1px; white-space: nowrap; }
+  /* Pagination */
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 48px; flex-wrap: wrap; }
+  .page-btn {
+    background: none; border: 1px solid rgba(184,134,11,0.3); color: var(--gray-light);
+    width: 40px; height: 40px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  }
+  .page-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .page-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 700; }
+  .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .page-btn.wide { width: auto; padding: 0 16px; }
   .product-card {
     background: var(--dark2); border: 1px solid rgba(201,168,76,0.1);
     transition: all 0.3s; overflow: hidden;
@@ -550,6 +581,7 @@
 <section class="hero" id="home">
   <div class="hero-bg"></div>
   <div class="hero-glow"></div>
+  <div class="hero-shape"></div>
   <div class="container">
     <div class="hero-content fade-up">
       <div class="hero-badge">Goiânia – GO · Desde 2010</div>
@@ -634,6 +666,7 @@
     <div class="filter-bar" id="filterBar"></div>
     <div class="results-count" id="resultsCount"></div>
     <div class="products-grid" id="productsGrid"></div>
+    <div class="pagination" id="paginationBar"></div>
   </div>
 </section>
 
@@ -3737,7 +3770,7 @@ let products = [
     "name": "Cadeira Escritório B-ONE Base em “S” Preta – Corino Preto – 31032",
     "price": 325.5,
     "img": "https://moveispollo.com.br/wp-content/uploads/2025/07/15360588806-copia-de-b-one.jpg",
-    "category": "acessorios",
+    "category": "executivas",
     "url": "https://moveispollo.com.br/cadeira-escritorio-b-one-base-em-s-cromada-pmd-31032/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -3747,7 +3780,7 @@ let products = [
     "name": "Cadeira Escritório B-ONE Base em “S” Cromada – Corino Preto – 31033",
     "price": 441,
     "img": "https://moveispollo.com.br/wp-content/uploads/2021/03/Copia-de-bone-1.jpg",
-    "category": "acessorios",
+    "category": "executivas",
     "url": "https://moveispollo.com.br/cadeira-escritorio-b-one-base-em-s-cromada-martiflex-31033/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -5627,7 +5660,7 @@ let products = [
     "name": "Arquivo de Madeira 04 Gavetas Pasta Suspensa – MDP – 1,32×0,46×0,42m CINZA/CINZA – 21211",
     "price": 575.75,
     "img": "https://moveispollo.com.br/wp-content/uploads/2022/02/15112018583_Arquivo.jpg",
-    "category": "acessorios",
+    "category": "moveis_esc",
     "url": "https://moveispollo.com.br/arquivo-04-gavetas-pasta-suspensa-132x046x042m-workstart-cinza-cinza-21211/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6187,7 +6220,7 @@ let products = [
     "name": "Conjunto HEXAGONAL Mesas e Cadeiras – 02 A 06 anos – INFANTIL – REALPLAST – 41006",
     "price": 2890.51,
     "img": "https://moveispollo.com.br/wp-content/uploads/2021/04/1-1.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/conjunto-hexagonal-mesas-e-cadeiras-03-a-05-anos-infantil-realplast-41006/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6197,7 +6230,7 @@ let products = [
     "name": "Conjunto HEXAGONAL Mesas e Cadeiras – 02 A 06 anos – INFANTIL – REALPLAST – 41098",
     "price": 2890.51,
     "img": "https://moveispollo.com.br/wp-content/uploads/2022/10/hexa-infantil.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/conjunto-hexagonal-mesas-e-cadeiras-02-a-06-anos-infantil-realplast-41098/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6207,7 +6240,7 @@ let products = [
     "name": "Conjunto HEXAGONAL Mesas e Cadeiras – 02 A 06 anos – INFANTIL – PMD – REALPLAST- 42011",
     "price": 2890.51,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/11/15225894693_verde-.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/conjunto-hexagonal-mesas-e-cadeiras-02-a-06-anos-infantil-pollo-moveis/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6257,7 +6290,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – COR AZUL – REALPLAST- 40081",
     "price": 559.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/03/15177000280_5D.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-realplast-cor-azul-40081/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6267,7 +6300,7 @@ let products = [
     "name": "Kit Escolar Individual VERDE – (Mesa e Cadeira) – ADULTO – REALPLAST – COR VERDE – 40084",
     "price": 555.38,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/03/15176990533_verde.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-verde-mesa-e-cadeira-adulto-realplast-cor-verde-40084/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6277,7 +6310,7 @@ let products = [
     "name": "Kit Escolar Individual AMARELO – (Mesa e Cadeira) – ADULTO – COR AMARELO – REALPLAST – 40083",
     "price": 1657.39,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/03/15176999378_amarelo-1.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-amarelo-mesa-e-cadeira-adulto-realplast-cor-amarelo-40083/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6287,7 +6320,7 @@ let products = [
     "name": "Kit Escolar Individual VERMELHO – (Mesa e Cadeira) – ADULTO – REALPLAST – COR VERMELHO – 40082",
     "price": 1110.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/03/15176983649_vermelho.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-vermelho-mesa-e-cadeira-adulto-realplast-cor-vermelho-40082/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6297,7 +6330,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR AZUL – REALPLAST – 54004",
     "price": 559.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304249524-sem-titulo.png",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-azul-realplast-54004/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6307,7 +6340,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR VERDE – REALPLAST – 54006",
     "price": 559.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304249976-verde.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-verde-realplast-54006/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6317,7 +6350,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR AMARELO – REALPLAST – 54007",
     "price": 559.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304250283-amarelo.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-amarelo-realplast-54007/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6327,7 +6360,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR VERMELHO – REALPLAST – 54005",
     "price": 559.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304249789-vermelho.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-vermelho-realplast-54005/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6337,7 +6370,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR AZUL – MRPLAST- 54000",
     "price": 559.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304252073-1.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-azul-mrplast-54000/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6347,7 +6380,7 @@ let products = [
     "name": "Kit Escolar Individual VERDE – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR VERDE – MRPLAST – 54001",
     "price": 555.38,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304252097-2.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-verde-mrplast-54001/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6357,7 +6390,7 @@ let products = [
     "name": "Kit Escolar Individual AMARELO – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR AMARELO – MRPLAST – 54003",
     "price": 552.76,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304252186-4.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-amarelo-mrplast-54003/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6367,7 +6400,7 @@ let products = [
     "name": "Kit Escolar Individual VERMELHO – (Mesa e Cadeira) – ADULTO – TAMPO PLÁSTICO – COR VERMELHO – MRPLAST – 54002",
     "price": 556.26,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/10/15304252118-3.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-tampo-plastico-cor-vermelho-mrplast-54002/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6377,7 +6410,7 @@ let products = [
     "name": "Kit Escolar Individual AZUL – (Mesa e Cadeira) – ADULTO – MADEIRA – COR AZUL – REALPLAST –  40095",
     "price": 570.26,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/04/blue.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-azul-mesa-e-cadeira-adulto-mdf-cor-azul-40095/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6387,7 +6420,7 @@ let products = [
     "name": "Kit Escolar Individual AMARELO – (Mesa e Cadeira) – ADULTO – MADEIRA – COR AMARELO – REALPLAST – 40098",
     "price": 561.51,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/04/amarelo1.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-amarelo-mesa-e-cadeira-adulto-mdf-cor-amarelo-40098/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6397,7 +6430,7 @@ let products = [
     "name": "Kit Escolar Individual VERMELHO – (Mesa e Cadeira) – ADULTO – MADEIRA  – COR VERMELHO – REALPLAST – 40096",
     "price": 561.51,
     "img": "https://moveispollo.com.br/wp-content/uploads/2023/04/12131.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-vermelho-mesa-e-cadeira-adulto-mdf-cor-vermelho-40096/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -6407,7 +6440,7 @@ let products = [
     "name": "Kit Escolar Individual VERDE – (Mesa e Cadeira) – ADULTO – MADEIRA – COR VERDE – REALPLAST – 40093",
     "price": 1046.47,
     "img": "https://moveispollo.com.br/wp-content/uploads/2024/09/15296899850-adulto.jpg",
-    "category": "moveis_esc",
+    "category": "escolar",
     "url": "https://moveispollo.com.br/kit-escolar-individual-verde-mesa-e-cadeira-adulto-madeira-cor-verde-40093/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -7407,7 +7440,7 @@ let products = [
     "name": "Roupeiro LOCKER de Aço com 02 PORTAS GRANDES – 1,90×0,32×0,40m – W3 – CZ/CZ 11012",
     "price": 350,
     "img": "https://moveispollo.com.br/wp-content/uploads/2022/08/14205495948_02pt.jpg",
-    "category": "acessorios",
+    "category": "armarios",
     "url": "https://moveispollo.com.br/roupeiro-locker-de-aco-com-02-portas-grandes-182x032x042m-cz-cz-w3-11012/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -8067,7 +8100,7 @@ let products = [
     "name": "Aranha Secretária / Executiva 79001",
     "price": 70,
     "img": "https://moveispollo.com.br/wp-content/uploads/2022/10/aranha-secretaria-executiva-plaxmetal-79001.png",
-    "category": "executivas",
+    "category": "acessorios",
     "url": "https://moveispollo.com.br/aranha-secretaria-executiva-plaxmetal/",
     "desc": "Produto importado automaticamente da Móveis Pollo.",
     "stock": 10
@@ -10460,6 +10493,12 @@ let orderCounter = orders.length ? Math.max(...orders.map(o => parseInt(o.id.rep
 let currentFilter = 'todos';
 let adminVisible = false;
 
+// Deduplicate products by ID (keep first occurrence)
+(function() {
+  const seen = new Set();
+  products = products.filter(p => { if (seen.has(p.id)) return false; seen.add(p.id); return true; });
+})();
+
 // ==============================
 // SAVE TO STORAGE
 // ==============================
@@ -10537,8 +10576,15 @@ function renderFilterBar() {
   `).join('');
 }
 
+function goPage(p) {
+  window._prodPage = p;
+  renderProducts();
+  document.getElementById('produtos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function filterProducts(cat) {
   currentFilter = cat;
+  window._prodPage = 1;
   renderFilterBar();
   renderProducts();
   if (cat !== 'todos') {
@@ -10547,6 +10593,7 @@ function filterProducts(cat) {
 }
 
 function applyFilters() {
+  window._prodPage = 1;
   renderProducts();
 }
 
@@ -10570,11 +10617,36 @@ function renderProducts() {
 
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results"><div class="no-results-icon">🔍</div><h3>Nenhum produto encontrado</h3><p>Tente outro termo ou ajuste os filtros de preço.</p></div>';
+    document.getElementById('paginationBar').innerHTML = '';
     return;
   }
+
+  const PAGE_SIZE = 24;
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  if (typeof window._prodPage === 'undefined') window._prodPage = 1;
+  if (window._prodPage > totalPages) window._prodPage = 1;
+  const page = window._prodPage;
+  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   const prodGradients = {executivas:'linear-gradient(135deg,#1a1a2e,#0f3460)',presidente:'linear-gradient(135deg,#2d1b00,#8B6914)',diretor:'linear-gradient(135deg,#1a0a2e,#3d1a80)',secretaria:'linear-gradient(135deg,#0a1a1a,#1a5050)',gamer:'linear-gradient(135deg,#0d0d0d,#2d1060)',tela:'linear-gradient(135deg,#0a1a0a,#1a4a1a)',fixas:'linear-gradient(135deg,#1a0a0a,#4a1a1a)',caixa:'linear-gradient(135deg,#0a0a1a,#1a2a4a)',longarinas:'linear-gradient(135deg,#1a1200,#4a3600)',longarina_esp:'linear-gradient(135deg,#001a2e,#003d66)',moveis_esc:'linear-gradient(135deg,#1a1a1a,#3a2e18)',armarios:'linear-gradient(135deg,#0f0f0f,#2a2a2a)',escolar:'linear-gradient(135deg,#001a00,#003d00)',sofa:'linear-gradient(135deg,#2e001a,#660038)',refeitorio:'linear-gradient(135deg,#1a0f00,#3d2600)',banquetas:'linear-gradient(135deg,#0a1a2e,#1a3d66)',acessorios:'linear-gradient(135deg,#1a1a0a,#3d3d1a)'};
-  grid.innerHTML = filtered.map(p => {
-    return `
+  
+  let html = '';
+  let lastCat = null;
+  pageItems.forEach(p => {
+    // Category group header for "Todos" mode
+    if (currentFilter === 'todos' && p.category !== lastCat) {
+      lastCat = p.category;
+      const catObj = categories.find(c => c.id === p.category);
+      const catName = catObj ? catObj.name : p.category;
+      const catCount = filtered.filter(x => x.category === p.category).length;
+      html += `<div class="cat-group-header">
+        <div class="cat-group-title">${catName}</div>
+        <div class="cat-group-line"></div>
+        <div class="cat-group-count">${catCount} produto${catCount !== 1 ? 's' : ''}</div>
+      </div>`;
+    }
+    const desc = (p.desc && p.desc !== 'Produto importado automaticamente da Móveis Pollo.') ? p.desc : '';
+    html += `
     <div class="product-card">
       <div class="product-img" style="background:${prodGradients[p.category]||'var(--dark3)'}">
         ${p.img
@@ -10586,7 +10658,7 @@ function renderProducts() {
       <div class="product-body">
         <div class="product-cat">${categories.find(c=>c.id===p.category)?.name || p.category}</div>
         <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
+        ${desc ? `<div class="product-desc">${desc}</div>` : ''}
         <div class="product-price">${fmt(p.price)}</div>
         <div class="product-installment">ou 10x de ${fmt(p.price/10)} sem juros</div>
         <div class="product-actions">
@@ -10597,11 +10669,28 @@ function renderProducts() {
           <a class="btn-detail" style="text-decoration:none;display:flex;align-items:center;justify-content:center;background:#25D366;border-color:#25D366;color:white" href="https://wa.me/5562994013632?text=Olá!%20Tenho%20interesse%20no%20produto:%20*${encodeURIComponent(p.name)}*%20-%20${p.price>0?fmt(p.price).replace('R$ ','R%24%20'):'Consultar%20preço'}" target="_blank" title="Pedir pelo WhatsApp">💬</a>
         </div>
         <div class="stock-badge ${p.stock <= 3 ? 'stock-low' : ''}">
-          ${p.stock === 0 ? '❌ Sem estoque' : p.stock <= 3 ? `⚠ Apenas ${p.stock} em estoque` : `✓ ${p.stock} em estoque`}
+          ${p.stock === 0 ? '❌ Sem estoque' : p.stock <= 3 ? `⚠ Apenas ${p.stock} em estoque` : `✓ Em estoque`}
         </div>
       </div>
     </div>
-  `;}).join('');
+  `;});
+  grid.innerHTML = html;
+
+  // Render pagination
+  const pBar = document.getElementById('paginationBar');
+  if (totalPages <= 1) { pBar.innerHTML = ''; return; }
+  let pHtml = `<button class="page-btn wide" onclick="goPage(${page-1})" ${page===1?'disabled':''}>← Anterior</button>`;
+  const maxVisible = 7;
+  let start = Math.max(1, page - Math.floor(maxVisible/2));
+  let end = Math.min(totalPages, start + maxVisible - 1);
+  if (end - start < maxVisible - 1) start = Math.max(1, end - maxVisible + 1);
+  if (start > 1) pHtml += `<button class="page-btn" onclick="goPage(1)">1</button>${start > 2 ? '<span style="color:var(--gray);padding:0 4px">…</span>' : ''}`;
+  for (let i = start; i <= end; i++) {
+    pHtml += `<button class="page-btn ${i===page?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  if (end < totalPages) pHtml += `${end < totalPages-1 ? '<span style="color:var(--gray);padding:0 4px">…</span>' : ''}<button class="page-btn" onclick="goPage(${totalPages})">${totalPages}</button>`;
+  pHtml += `<button class="page-btn wide" onclick="goPage(${page+1})" ${page===totalPages?'disabled':''}>Próxima →</button>`;
+  pBar.innerHTML = pHtml;
 }
 
 // ==============================
