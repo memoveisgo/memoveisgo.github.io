@@ -136,7 +136,7 @@
 
   /* HERO */
   .hero {
-    min-height: 100vh; display: flex; align-items: center;
+    min-height: 70vh; display: flex; align-items: center;
     position: relative; overflow: hidden;
     background: linear-gradient(135deg, #FAF7F2 0%, #F5EDDE 50%, #FDF9F4 100%);
   }
@@ -220,13 +220,100 @@
 
   /* PRODUCTS */
   .products { background: #FAFAF8; }
-  .filter-bar { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; align-items: center; }
+  .filter-bar { 
+    display: flex; gap: 8px; margin-bottom: 40px; 
+    overflow-x: auto; align-items: center;
+    scrollbar-width: none; -ms-overflow-style: none;
+    padding-bottom: 4px;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
   .filter-btn {
     padding: 8px 20px; border: 1px solid rgba(201,168,76,0.3);
     background: none; color: var(--gray-light); font-family: 'DM Sans', sans-serif;
     font-size: 13px; cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px;
+    white-space: nowrap; flex-shrink: 0;
   }
   .filter-btn.active, .filter-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 600; }
+
+  /* HERO SEARCH INTEGRADO */
+  .hero-search-box {
+    display: flex; align-items: center; background: #fff;
+    border: 1px solid rgba(201,168,76,0.4); margin-bottom: 48px;
+    box-shadow: 0 8px 32px rgba(184,134,11,0.12); max-width: 620px;
+  }
+  .hero-search-input {
+    flex: 1; background: none; border: none; color: #1A1A1A;
+    padding: 16px 20px; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    outline: none;
+  }
+  .hero-search-input::placeholder { color: #9CA3AF; }
+  .hero-search-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #fff; border: none; padding: 16px 28px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+    cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
+    white-space: nowrap; flex-shrink: 0; transition: opacity .2s;
+  }
+  .hero-search-btn:hover { opacity: .88; }
+
+  /* CARROSSEL DE DESTAQUES */
+  .destaques-wrap {
+    background: #fff; border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 36px 0 0;
+  }
+  .destaques-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; margin-bottom: 24px;
+  }
+  .destaques-titulo {
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #1A1A1A;
+  }
+  .destaques-titulo em { font-style: italic; color: var(--gold); }
+  .destaques-ver-todos {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); cursor: pointer; background: none; border: none;
+    font-family: 'DM Sans', sans-serif; font-weight: 600;
+  }
+  .carrossel-wrap { position: relative; }
+  .carrossel {
+    display: flex; gap: 16px; overflow-x: auto; padding: 0 40px 28px;
+    scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .carrossel::-webkit-scrollbar { display: none; }
+  .dest-card {
+    flex: 0 0 260px; background: #FAFAF8; border: 1px solid rgba(201,168,76,0.2);
+    cursor: pointer; scroll-snap-align: start; transition: transform .3s, box-shadow .3s;
+    position: relative; overflow: hidden;
+  }
+  .dest-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(184,134,11,0.15); border-color: var(--gold); }
+  .dest-card-img { height: 180px; overflow: hidden; background: #F0EBE0; position: relative; display: flex; align-items: center; justify-content: center; }
+  .dest-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .dest-card:hover .dest-card-img img { transform: scale(1.06); }
+  .dest-badge { position: absolute; top: 8px; left: 8px; background: var(--gold); color: #fff; font-size: 10px; padding: 3px 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; z-index: 2; }
+  .dest-body { padding: 14px 16px 16px; }
+  .dest-cat { font-size: 10px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+  .dest-name { font-size: 13px; color: #1A1A1A; font-weight: 600; margin-bottom: 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .dest-price { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); font-weight: 700; }
+  .carrossel-arrow {
+    position: absolute; top: 50%; transform: translateY(-70%);
+    background: rgba(255,255,255,.95); border: 1px solid rgba(201,168,76,.3);
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; font-size: 18px; color: #1A1A1A;
+    transition: all .2s; box-shadow: 0 2px 12px rgba(0,0,0,.1);
+  }
+  .carrossel-arrow:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .carrossel-arrow.left { left: 8px; }
+  .carrossel-arrow.right { right: 8px; }
+
+  /* SKELETON PRODUTOS */
+  .prod-skeleton { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .skel-card { background: #fff; border: 1px solid rgba(201,168,76,.1); padding: 16px; }
+  .skel-img { height: 200px; background: linear-gradient(90deg,#F0EBE0 25%,#FAF5EC 50%,#F0EBE0 75%); background-size:200% 100%; animation: shimmer 1.5s infinite; margin-bottom: 12px; }
+  .skel-line { height: 12px; background: linear-gradient(90deg,#F0EBE0 25%,#FAF5EC 50%,#F0EBE0 75%); background-size:200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; margin-bottom: 8px; }
+  .skel-line.w60 { width: 60%; }
+  .skel-line.w80 { width: 80%; }
+  .skel-line.w40 { width: 40%; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   .search-bar-wrap {
     display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
   }
@@ -599,13 +686,20 @@
     .footer-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
     .cart-sidebar { width: 100%; right: -100%; }
-    .hero-stats { gap: 24px; }
+    .hero-stats { gap: 20px; }
+    .hero-search-box { flex-direction: column; }
+    .hero-search-input { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid rgba(201,168,76,.2); }
+    .hero-search-btn { width: 100%; padding: 14px; }
     .admin-tabs { overflow-x: auto; }
     .product-card { padding: 10px; }
     .product-name { font-size: 13px; }
     .product-price { font-size: 18px; }
     .product-installment { font-size: 11px; }
     .add-btn { padding: 10px; font-size: 13px; }
+    .destaques-header { padding: 0 20px; }
+    .carrossel { padding: 0 20px 20px; gap: 12px; }
+    .dest-card { flex: 0 0 220px; }
+    .carrossel-arrow { display: none; }
   }
   @media (max-width: 480px) {
     .categories-grid { grid-template-columns: repeat(2, 1fr); }
@@ -771,6 +865,13 @@
         Transforme seu escritório com <em>qualidade</em>, conforto e entrega para todo o Brasil.
       </h1>
       <p class="hero-sub">Cadeiras e móveis corporativos de alto padrão. Entregamos em Goiânia e para todo o Brasil. Pagamento seguro e garantia de fábrica.</p>
+      
+      <!-- BUSCA INTEGRADA NO HERO -->
+      <div class="hero-search-box">
+        <input class="hero-search-input" id="heroSearchInput" type="text" placeholder="🔍  Buscar cadeira, mesa, armário..." oninput="heroSearch()">
+        <button class="hero-search-btn" onclick="heroSearch()">Buscar</button>
+      </div>
+
       <div class="hero-cta">
         <button class="btn-gold" onclick="scrollTo('produtos')">🛒 Comprar Agora</button>
         <button class="btn-outline" onclick="scrollTo('produtos')">Ver Categorias</button>
@@ -816,7 +917,19 @@
   </div>
 </div>
 
-<!-- CATEGORIES -->
+<!-- CARROSSEL DE DESTAQUES -->
+<div class="destaques-wrap" id="destaques-wrap" style="display:none">
+  <div class="destaques-header">
+    <div class="destaques-titulo">Produtos em <em>Destaque</em></div>
+    <button class="destaques-ver-todos" onclick="filterProducts('todos');document.getElementById('produtos').scrollIntoView({behavior:'smooth'})">Ver todos →</button>
+  </div>
+  <div class="carrossel-wrap">
+    <button class="carrossel-arrow left" onclick="moverCarrossel(-1)">‹</button>
+    <div class="carrossel" id="carrosselDestaques"></div>
+    <button class="carrossel-arrow right" onclick="moverCarrossel(1)">›</button>
+  </div>
+</div>
+
 <!-- PRODUCTS -->
 <section class="products" id="produtos">
   <div class="container">
@@ -836,7 +949,16 @@
     </div>
     <div class="filter-bar" id="filterBar"></div>
     <div class="results-count" id="resultsCount"></div>
-    <div class="products-grid" id="productsGrid"></div>
+    <div class="products-grid" id="productsGrid">
+      <div class="prod-skeleton" style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px">
+        <div class="skel-card"><div class="skel-img"></div><div class="skel-line w60"></div><div class="skel-line w80"></div><div class="skel-line w40"></div></div>
+        <div class="skel-card"><div class="skel-img"></div><div class="skel-line w60"></div><div class="skel-line w80"></div><div class="skel-line w40"></div></div>
+        <div class="skel-card"><div class="skel-img"></div><div class="skel-line w60"></div><div class="skel-line w80"></div><div class="skel-line w40"></div></div>
+        <div class="skel-card"><div class="skel-img"></div><div class="skel-line w60"></div><div class="skel-line w80"></div><div class="skel-line w40"></div></div>
+        <div class="skel-card"><div class="skel-img"></div><div class="skel-line w60"></div><div class="skel-line w80"></div><div class="skel-line w40"></div></div>
+        <div class="skel-card"><div class="skel-img"></div><div class="skel-line w60"></div><div class="skel-line w80"></div><div class="skel-line w40"></div></div>
+      </div>
+    </div>
     <div class="pagination" id="paginationBar"></div>
   </div>
 </section>
@@ -11747,11 +11869,54 @@ document.querySelectorAll('#navLinks .dropdown a').forEach(a => {
 });
 
 // INIT - render everything on page load
+// ===== BUSCA DO HERO =====
+window.heroSearch = function() {
+  const val = document.getElementById('heroSearchInput').value.trim();
+  const searchEl = document.getElementById('searchInput');
+  if (searchEl) searchEl.value = val;
+  currentFilter = 'todos';
+  window._prodPage = 1;
+  renderFilterBar();
+  renderProducts();
+  document.getElementById('produtos').scrollIntoView({ behavior: 'smooth' });
+};
+
+// ===== CARROSSEL DE DESTAQUES =====
+function renderCarrossel() {
+  const destaques = products.filter(p => p.badge);
+  const wrap = document.getElementById('destaques-wrap');
+  if (destaques.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const catNome = id => categories.find(c => c.id === id)?.name || id;
+  document.getElementById('carrosselDestaques').innerHTML = destaques.map(p => `
+    <div class="dest-card" onclick="filterProducts('${p.category}')">
+      <div class="dest-card-img">
+        ${p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">` : `<span style="font-size:48px">${p.icon}</span>`}
+        ${p.badge ? `<span class="dest-badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="dest-body">
+        <div class="dest-cat">${catNome(p.category)}</div>
+        <div class="dest-name">${p.name}</div>
+        <div class="dest-price">${fmt(p.price)}</div>
+      </div>
+    </div>`).join('');
+}
+window.moverCarrossel = function(dir) {
+  const c = document.getElementById('carrosselDestaques');
+  c.scrollBy({ left: dir * 280, behavior: 'smooth' });
+};
+
 document.addEventListener('DOMContentLoaded', function() {
   renderCategories();
   renderFilterBar();
-  renderProducts();
   updateCart();
+  // Adia o render pesado dos produtos para depois da primeira pintura
+  // Assim o hero e o skeleton aparecem instantaneamente
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => { renderProducts(); renderCarrossel(); }, { timeout: 800 });
+  } else {
+    setTimeout(() => { renderProducts(); renderCarrossel(); }, 100);
+  }
 });
 
 </script>
